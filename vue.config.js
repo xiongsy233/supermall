@@ -1,5 +1,5 @@
 module.exports = {
-    configurewebpack:{
+    configureWebpack:{
         resolve:{
             // 给文件名配置别名 @默认为src文件
             alias:{
