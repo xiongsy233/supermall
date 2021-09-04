@@ -29,6 +29,8 @@ export default {
     methods:{
         itemClick(index){
             this.activecount=index
+            // 子组件传父组件
+            this.$emit('tabClick',index)
         }
     },
 }
@@ -41,6 +43,7 @@ export default {
     height: 40px;
     line-height: 40px;
     text-align: center;
+    z-index: 9;
 }
 .tab-control div{
     flex: 1;
