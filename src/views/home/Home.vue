@@ -3,22 +3,34 @@
     <navbar class="home-nav">
       <div slot="center">购物街</div>
     </navbar>
-    <home-swiper :banners="banners"></home-swiper>
-    <recommend-view :recommends="recommends"></recommend-view>
-    <feature-view></feature-view>
-    <tab-control
-      class="tab-control"
-      :titles="['流行', '新款', '精选']"
-      @tabClick="tabClick"
-    ></tab-control>
-    <goods-list :goods="showGoods"></goods-list>
+    <b-scroll
+      class="b-scroll"
+      ref="scroll"
+      :probe-type="3"
+      :pull-up-load="true"
+      @scroll="contentScroll"
+      @pullingUp="loadMore"
+    >
+      <home-swiper :banners="banners"></home-swiper>
+      <recommend-view :recommends="recommends"></recommend-view>
+      <feature-view></feature-view>
+      <tab-control
+        class="tab-control"
+        :titles="['流行', '新款', '精选']"
+        @tabClick="tabClick"
+      ></tab-control>
+      <goods-list :goods="showGoods"></goods-list>
+    </b-scroll>
+    <back-top @click.native="backClick" v-show="isShowBack"></back-top>
   </div>
 </template>
 
 <script>
+import BScroll from "components/common/scroll/BScroll.vue";
 import Navbar from "components/common/navbar/Navbar.vue";
 import TabControl from "components/content/tabControl/TabControl.vue";
 import GoodsList from "components/content/goods/GoodsList.vue";
+import BackTop from "components/content/backtop/BackTop.vue";
 
 import { getHomeMultidata, getHomeGoods } from "network/home.js";
 
@@ -39,6 +51,7 @@ export default {
         sell: { page: 0, list: [] },
       },
       currentType: "pop",
+      isShowBack: false,
     };
   },
   created() {
@@ -47,21 +60,42 @@ export default {
       this.getGoods("new"),
       this.getGoods("sell");
   },
+  mounted() {
+    let refresh = this.debounce(this.$refs.scroll.refresh, 100);
+    // 监听照片加载完成后，执行better-scroll里面的refersh()
+    this.$bus.$on("itemImgLoad", () => {
+      refresh();
+    });
+  },
   components: {
+    BScroll,
     Navbar,
     TabControl,
     GoodsList,
+    BackTop,
 
     HomeSwiper,
     RecommendView,
     FeatureView,
   },
-  computed:{
-    showGoods(){
-      return this.goods[this.currentType].list
-    }
+  computed: {
+    showGoods() {
+      return this.goods[this.currentType].list;
+    },
   },
   methods: {
+    /* 
+    防抖动函数
+     */
+    debounce(func, delay) {
+      let timer = null;
+      return function (...args) {
+        if (timer) clearTimeout(timer);
+        timer = setTimeout(() => {
+          func.apply(this,args);
+        }, delay);
+      };
+    },
     /* 
     事件监听相关方法
      */
@@ -78,6 +112,17 @@ export default {
           break;
       }
     },
+    backClick() {
+      this.$refs.scroll.scrollTo(0, 0);
+    },
+    // 计算位置
+    contentScroll(position) {
+      this.isShowBack = position.y < -1000;
+    },
+    // 开始加载更多
+    loadMore() {
+      this.getGoods(this.currentType);
+    },
 
     // 请求首页数据
     getMultidata() {
@@ -93,6 +138,8 @@ export default {
       getHomeGoods(type, page).then((res) => {
         this.goods[type].list.push(...res.data.list);
         this.goods[type].page += 1;
+        // 完成加载更多
+        this.$refs.scroll.finishPullUp();
       });
     },
   },
@@ -103,17 +150,32 @@ export default {
 <style scoped>
 #home {
   padding-top: 44px;
+  /* vh  视口高度 */
+  height: 100vh;
+  position: relative;
 }
 .home-nav {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
-  z-index: 999;
+  z-index: 1000;
 }
 .tab-control {
   position: sticky;
   top: 44px;
   background: #fff;
 }
+.b-scroll {
+  position: absolute;
+  top: 44px;
+  left: 0;
+  right: 0;
+  bottom: 55px;
+  z-index: 0;
+}
+/* .b-scroll{
+  height: calc(100vh - 93px);
+  overflow: hidden;
+} */
 </style>

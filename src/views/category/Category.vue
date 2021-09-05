@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h1>分类</h1>
+       分类
     </div>
 </template>
 
@@ -10,12 +10,6 @@ export default {
     data() {
         return {
         }
-    },
-    watch:{
-    },
-    created() {
-    },
-    methods:{
     },
 }
 </script>
