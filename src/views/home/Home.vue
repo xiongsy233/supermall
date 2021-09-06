@@ -18,6 +18,7 @@
         class="tab-control"
         :titles="['流行', '新款', '精选']"
         @tabClick="tabClick"
+        ref="tabcontrol"
       ></tab-control>
       <goods-list :goods="showGoods"></goods-list>
     </b-scroll>
@@ -52,6 +53,8 @@ export default {
       },
       currentType: "pop",
       isShowBack: false,
+      tabOffsetTop:null,
+      leaveY:0
     };
   },
   created() {
@@ -61,11 +64,28 @@ export default {
       this.getGoods("sell");
   },
   mounted() {
+    // 1.监听图片加载完事件
     let refresh = this.debounce(this.$refs.scroll.refresh, 100);
     // 监听照片加载完成后，执行better-scroll里面的refersh()
     this.$bus.$on("itemImgLoad", () => {
       refresh();
     });
+    // 2.获取tab-control组件里元素的offsetTop高度
+    // $el 可以获取组件里的元素
+    // 延时获取，等其他图片加载完再获取高度，更准确
+    // setTimeout(()=>{
+    // console.log(this.$refs.tabcontrol.$el.offsetTop);
+    // },500)
+   
+  },
+  // 周期函数 活跃时
+  activated() {
+    this.$refs.scroll.scrollTo(0,this.leaveY ,0)
+    this.$refs.scroll.refresh()
+  },
+  // 周期函数，离开时
+  deactivated() {
+    this.leaveY= this.$refs.scroll.scroll.y
   },
   components: {
     BScroll,
@@ -159,6 +179,8 @@ export default {
   top: 0;
   left: 0;
   right: 0;
+  background: var(--color-tint);
+  color:#fff;
   z-index: 1000;
 }
 .tab-control {

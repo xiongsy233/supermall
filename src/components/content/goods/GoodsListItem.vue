@@ -1,13 +1,11 @@
 <template>
-  <div class="goods-list-item">
-    <a :href="item.link">
-      <img :src="item.show.img" alt=""   @load="imgLoad"/>
-      <div class="goods-info">
-        <p class="item-title">{{ item.title }}</p>
-        <span class="price">{{ item.price }}</span>
-        <span class="collect">{{ item.cfav }}</span>
-      </div>
-    </a>
+  <div class="goods-list-item" @click="itemClick">
+    <img :src="item.show.img" alt="" @load="imgLoad" />
+    <div class="goods-info">
+      <p class="item-title">{{ item.title }}</p>
+      <span class="price">{{ item.price }}</span>
+      <span class="collect">{{ item.cfav }}</span>
+    </div>
   </div>
 </template>
 
@@ -26,8 +24,22 @@ export default {
   created() {},
   methods: {
     // 照片加载完执行
-    imgLoad(){
-      this.$bus.$emit("itemImgLoad")
+    imgLoad() {
+      this.$bus.$emit("itemImgLoad");
+    },
+    // 跳转页面
+    // 动态路由传递
+    itemClick(){
+      // 路由参数传递   params类型
+      this.$router.push('/detail/'+ this.item.iid)
+      // 
+      // 路由参数传递   query方法
+      // this.$router.push({
+      //   path :'/datail',
+      //   query:{
+      //     id:this.item.iid
+      //   }
+      // })
     }
   },
 };
@@ -38,7 +50,7 @@ export default {
   position: relative;
   width: 48%;
   margin: 5px 0;
-  padding-bottom:30px ;
+  padding-bottom: 30px;
   font-size: 12px;
   text-align: center;
 }
@@ -46,7 +58,7 @@ export default {
   width: 100%;
   border-radius: 10px;
 }
-.goods-info{
+.goods-info {
   position: absolute;
   bottom: 0;
   width: 100%;

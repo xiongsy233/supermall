@@ -26,7 +26,8 @@ export default {
     .navbar{
         display: flex;
         height: 44px;
-        background: var( --color-tint); 
+        background: var(--color-background); 
+        color: #ccc;
         line-height: 44px;
         box-shadow: 0 2px 2px rgba(100, 100, 100, 0.1);
     }
@@ -40,6 +41,5 @@ export default {
         text-align: center; 
         font-size: 16px;
         font-weight: bold;
-        color: #fff;
     }
 </style>
