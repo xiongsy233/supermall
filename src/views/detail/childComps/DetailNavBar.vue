@@ -1,22 +1,20 @@
 <template>
-  <div>
-    <navbar class="detail-nav">
-        <div slot="left" class="nav-back" @click="navBack">
-            <img src="~assets/img/common/back.svg" alt="">
-        </div>
-      <div class="detail-nav-center" slot="center">
-        <nav
-          class="detail-nav-item"
-          v-for="(item, index) in this.titles"
-          :key="index"
-          :class="{active : currentIndex === index}"
-          @click="navClick(index)"
-        >
-          {{ item }}
-        </nav>
-      </div>
-    </navbar>
-  </div>
+  <navbar class="detail-nav">
+    <div slot="left" class="nav-back" @click="navBack">
+      <img src="~assets/img/common/back.svg" alt="" />
+    </div>
+    <div class="detail-nav-center" slot="center">
+      <nav
+        class="detail-nav-item"
+        v-for="(item, index) in this.titles"
+        :key="index"
+        :class="{ active: currentIndex === index }"
+        @click="navClick(index)"
+      >
+        {{ item }}
+      </nav>
+    </div>
+  </navbar>
 </template>
 
 <script>
@@ -34,12 +32,12 @@ export default {
   },
   created() {},
   methods: {
-      navBack(){
-          this.$router.back()
-      },
-      navClick(index){
-          this.currentIndex =index
-      }
+    navBack() {
+      this.$router.back();
+    },
+    navClick(index) {
+      this.currentIndex = index;
+    },
   },
 };
 </script>
@@ -57,14 +55,14 @@ export default {
   flex: 1;
   font-size: 14px;
 }
-.active{
-    color: var(--color-high-text);
+.active {
+  color: var(--color-high-text);
 }
-.nav-back{
-    width:100% ;
-    height: 100%;
+.nav-back {
+  width: 100%;
+  height: 100%;
 }
-.nav-back img{
-    margin:10px 25px;
+.nav-back img {
+  margin: 10px 25px;
 }
 </style>
