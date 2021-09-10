@@ -36,3 +36,11 @@ export class Shop {
         this.goodsCount=shopInfo.cGoods
     }
 }
+
+// 获取商品参数信息
+export class GoodsParam{
+    constructor(info,rule){
+        this.infos = info.set
+        this.sizes = rule.tables
+    }
+}

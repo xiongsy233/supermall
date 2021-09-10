@@ -6,8 +6,10 @@
       <detail-goods-info :goods="goods"></detail-goods-info>
       <detail-shop-info :shop="shop"></detail-shop-info>
       <detail-details-info :goodsInfo="goodsInfo" @imgLoad="imgLoad"></detail-details-info>
+      <detail-goods-param :goodsParam="goodsParam"></detail-goods-param>
+      <detail-comment-info :commentInfo="commentInfo"></detail-comment-info>
     </b-scroll>
-    <back-top @click.native="backClick" v-show="isShowBack"></back-top>
+    <!-- <back-top @click.native="backClick" v-show="isShowBack"></back-top> -->
   </div>
 </template>
 
@@ -16,13 +18,16 @@ import DetailNavBar from "./childComps/DetailNavBar.vue";
 import DetailSwiper from "./childComps/DetailSwiper.vue";
 import DetailGoodsInfo from "./childComps/DetailGoodsInfo.vue";
 import DetailShopInfo from "./childComps/DetailShopInfo.vue";
-import BackTop from "components/content/backtop/BackTop.vue";
-
+import DetailDetailsInfo from './childComps/DetailDetailsInfo.vue';
+import DetailGoodsParam from './childComps/DetailGoodsParam.vue';
+import DetailCommentInfo from './childComps/DetailCommentInfo.vue';
 
 import BScroll from "components/common/scroll/BScroll.vue";
+import BackTop from "components/content/backtop/BackTop.vue";
+
 // 请求详情页数据
-import { getDetailData, Goods, Shop } from "network/detail.js";
-import DetailDetailsInfo from './childComps/DetailDetailsInfo.vue';
+import { getDetailData, Goods, Shop,GoodsParam } from "network/detail.js";
+
 export default {
   name: "Detail",
   components: {
@@ -32,7 +37,9 @@ export default {
     DetailShopInfo,
     BScroll,
     BackTop,
-    DetailDetailsInfo
+    DetailDetailsInfo,
+    DetailGoodsParam,
+    DetailCommentInfo
   },
 
   data() {
@@ -42,7 +49,9 @@ export default {
       goods: {},
       shop: {},
       isShowBack: false,
-      goodsInfo:{}
+      goodsInfo:{},
+      goodsParam:{},
+      commentInfo:[]
     };
   },
 
@@ -63,6 +72,12 @@ export default {
       this.shop = new Shop(data.shopInfo);
       // 请求detailInfo
       this.goodsInfo = data.detailInfo
+      // 请求商品参数
+      this.goodsParam = new GoodsParam(data.itemParams.info,data.itemParams.rule)
+      // 请求评论信息
+      if(data.rate.cRate !== 0){
+        this.commentInfo = data.rate.list
+      }
     });
   },
   methods: {

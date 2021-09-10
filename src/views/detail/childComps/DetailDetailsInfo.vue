@@ -1,5 +1,5 @@
 <template>
-  <div class="detail-info">
+  <div class="detail-info" v-if="Object.keys(goodsInfo).length !== 0">
     <div class="detail-list">
       <img
         v-for="(item, index) in goodsInfo.detailImage[0].list"
