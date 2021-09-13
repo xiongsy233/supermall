@@ -93,6 +93,8 @@ export default {
     margin: 10px 0;
 }
 .comment-img img{
+    margin: 2px;
     width: 25%;
+    height: 50%;
 }
 </style>

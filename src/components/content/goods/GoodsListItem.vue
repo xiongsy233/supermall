@@ -1,6 +1,6 @@
 <template>
   <div class="goods-list-item" @click="itemClick">
-    <img :src="item.show.img" alt="" @load="imgLoad" />
+    <img :src="item.show ? item.show.img : item.image" alt="" @load="imgLoad" />
     <div class="goods-info">
       <p class="item-title">{{ item.title }}</p>
       <span class="price">{{ item.price }}</span>
@@ -20,19 +20,24 @@ export default {
   data() {
     return {};
   },
-  watch: {},
-  created() {},
+  computed: {
+    // showImg(item) {
+    //   return item.image || item.show.img
+    // }
+  },
   methods: {
     // 照片加载完执行
     imgLoad() {
-      this.$bus.$emit("itemImgLoad");
+      if(this.$route.path.indexOf('/home')){
+        this.$bus.$emit("itemImgLoad");
+      } 
     },
     // 跳转页面
     // 动态路由传递
-    itemClick(){
+    itemClick() {
       // 路由参数传递   params类型
-      this.$router.push('/detail/'+ this.item.iid)
-      // 
+      this.$router.push("/detail/" + this.item.iid);
+      //
       // 路由参数传递   query方法
       // this.$router.push({
       //   path :'/datail',
@@ -40,7 +45,7 @@ export default {
       //     id:this.item.iid
       //   }
       // })
-    }
+    },
   },
 };
 </script>
