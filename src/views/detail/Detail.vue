@@ -42,6 +42,7 @@ import DetailBottomBar from "./childComps/DetailBottomBar.vue";
 
 import BScroll from "components/common/scroll/BScroll.vue";
 import BackTop from "components/content/backtop/BackTop.vue";
+import GoodsList from "components/content/goods/GoodsList.vue";
 
 // 请求详情页数据
 import {
@@ -51,7 +52,6 @@ import {
   Shop,
   GoodsParam,
 } from "network/detail.js";
-import GoodsList from "../../components/content/goods/GoodsList.vue";
 
 export default {
   name: "Detail",
@@ -68,7 +68,6 @@ export default {
     GoodsList,
     DetailBottomBar,
   },
-
   data() {
     return {
       id: null,
@@ -161,11 +160,13 @@ export default {
       let product = {};
       product.imag = this.topImages[0];
       product.title = this.goods.title;
-      product.desc = this.goods.desc
-      product.price = this.goods.realPrice
-      product.iid = this.id
+      product.desc = this.goods.desc;
+      product.price = this.goods.realPrice;
+      product.iid = this.id;
       // 将商品添加到购物车 将数据product传到vuex
-      this.$store.dispatch('addCart',product)
+      this.$store.dispatch("addCart", product).then((res) => {
+        this.$toast.show(res, 2000);
+      });
     },
   },
 };

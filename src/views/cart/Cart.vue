@@ -29,7 +29,8 @@ export default {
     return {};
   },
   computed: {
-    //   mapGetters 可以直接将vuex 里的getters里的cartLength函数移到computed
+    //   mapGetters 可以直接将vuex 里的getters里的cartLength函数映射到computed
+    //   mapActions  可以将vuex 里的actions里的函数映射到methods
     ...mapGetters(["cartLength"]),
     isSelectAll() {
       if (this.$store.getters.cartlist.length === 0) {

@@ -10,7 +10,7 @@
       <span>全选</span>
       <span>合计:￥{{ totalPrice }}</span>
     </div>
-    <div class="buy">去购买({{ totalCount }})</div>
+    <div class="buy" @click="bottomClick">去购买({{ totalCount }})</div>
   </div>
 </template>
 
@@ -54,6 +54,11 @@ export default {
            }); 
         }
     },
+    bottomClick(){
+      if(!this.isShow){
+        this.$toast.show('请先选择商品',2000)
+      }
+    }
   },
 };
 </script>
